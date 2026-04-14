@@ -2,6 +2,20 @@
 
 Tiny HTTP service for a Raspberry Pi status LED.
 
+## Quickstart
+
+On a Raspberry Pi, start or refresh the service with:
+
+```bash
+bash setup-pi.sh
+```
+
+To stop the service:
+
+```bash
+sudo systemctl stop rp-edge-status
+```
+
 ## Run
 
 ```bash
