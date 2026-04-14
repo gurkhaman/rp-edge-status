@@ -6,7 +6,7 @@ SERVICE_NAME="rp-edge-status"
 REPO_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 SERVICE_PATH="/etc/systemd/system/${SERVICE_NAME}.service"
 SERVICE_USER="${USER}"
-PYTHON_BIN="/usr/bin/python3"
+PYTHON_VERSION="3.12"
 
 if [[ "${EUID}" -eq 0 ]]; then
     printf 'Run this script as the normal Pi user, not as root.\n' >&2
@@ -15,16 +15,6 @@ fi
 
 if [[ ! -f "${REPO_DIR}/app.py" || ! -f "${REPO_DIR}/pyproject.toml" ]]; then
     printf 'Run this script from the cloned rp-edge-status repository.\n' >&2
-    exit 1
-fi
-
-if [[ ! -x "${PYTHON_BIN}" ]]; then
-    printf 'Expected Python at %s but it was not found.\n' "${PYTHON_BIN}" >&2
-    exit 1
-fi
-
-if ! "${PYTHON_BIN}" -c 'import sys; raise SystemExit(0 if (3, 11) <= sys.version_info[:2] < (3, 13) else 1)'; then
-    printf 'This project needs system Python 3.11 or 3.12 because lgpio does not support Python 3.13 yet.\n' >&2
     exit 1
 fi
 
@@ -57,7 +47,8 @@ else
     ADDED_GPIO_GROUP=0
 fi
 
-"${UV_BIN}" sync --python "${PYTHON_BIN}"
+"${UV_BIN}" python install "${PYTHON_VERSION}"
+"${UV_BIN}" sync --python "${PYTHON_VERSION}"
 
 TMP_SERVICE="$(mktemp)"
 trap 'rm -f "${TMP_SERVICE}"' EXIT

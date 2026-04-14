@@ -65,7 +65,8 @@ bash setup-pi.sh
 What it does:
 
 - installs `uv` if it is missing
-- creates the project `.venv` with the system Python
+- installs Python `3.12` with `uv`
+- creates the project `.venv` with Python `3.12`
 - installs the Python dependencies
 - installs a `systemd` service named `rp-edge-status`
 - enables the service on boot
