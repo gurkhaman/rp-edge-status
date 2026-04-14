@@ -15,9 +15,9 @@ The service listens on `0.0.0.0:8000` by default.
 
 - `GET /healthz`
 - `GET /status`
-- `GET /status/on`
-- `GET /status/idle`
-- `GET /status/off`
+- `GET /status/on` -> Green
+- `GET /status/idle` -> Blue
+- `GET /status/off` -> Red
 
 Example response:
 
@@ -25,7 +25,7 @@ Example response:
 {
   "device": "edge-1",
   "state": "idle",
-  "color": "yellow",
+  "color": "blue",
   "last_changed_at": "2026-04-14T10:00:00+00:00",
   "changed": true
 }

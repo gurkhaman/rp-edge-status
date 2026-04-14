@@ -17,7 +17,7 @@ BLUE_PIN = 22
 
 STATE_TO_COLOR = {
     "on": ("green", (0, 1, 0)),
-    "idle": ("yellow", (1, 1, 0)),
+    "idle": ("blue", (0, 0, 1)),
     "off": ("red", (1, 0, 0)),
 }
 
