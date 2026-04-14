@@ -77,3 +77,31 @@ Notes:
 - run the script as your normal Pi user, not as `root`
 - the script will ask for `sudo` because it installs the `systemd` service
 - edit the constants in `app.py` first if you need a different `DEVICE_NAME`, port, or GPIO pins
+
+## Managing the Service
+
+If the config in `app.py` is wrong:
+
+1. Edit `app.py`.
+2. Rerun the setup script:
+
+```bash
+bash setup-pi.sh
+```
+
+That is the only command you need for both first-time setup and later refreshes. It will resync the environment, rewrite the service file, and start the service again.
+
+Because the app keeps state in memory only, rerunning the setup also resets the current status back to the default in `app.py`.
+
+To stop the service:
+
+```bash
+sudo systemctl stop rp-edge-status
+```
+
+To inspect the current service state:
+
+```bash
+sudo systemctl status rp-edge-status
+journalctl -u rp-edge-status -f
+```
