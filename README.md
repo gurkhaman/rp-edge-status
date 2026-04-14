@@ -53,3 +53,26 @@ When you are ready to use the real RGB LED on the Pi:
 1. Set `USE_GPIO = True`.
 2. Set the correct GPIO pins in `app.py`.
 3. Run `uv sync` on the Pi.
+
+## Pi Setup Script
+
+After cloning on a Raspberry Pi, you can do the whole setup with one command:
+
+```bash
+bash setup-pi.sh
+```
+
+What it does:
+
+- installs `uv` if it is missing
+- creates the project `.venv` with the system Python
+- installs the Python dependencies
+- installs a `systemd` service named `rp-edge-status`
+- enables the service on boot
+- starts or restarts the service immediately
+
+Notes:
+
+- run the script as your normal Pi user, not as `root`
+- the script will ask for `sudo` because it installs the `systemd` service
+- edit the constants in `app.py` first if you need a different `DEVICE_NAME`, port, or GPIO pins
