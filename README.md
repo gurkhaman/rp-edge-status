@@ -13,7 +13,7 @@ bash setup-pi.sh
 To stop the service:
 
 ```bash
-sudo systemctl stop rp-edge-status
+bash setup-pi.sh stop
 ```
 
 ## Run
@@ -32,6 +32,8 @@ The service listens on `0.0.0.0:8000` by default.
 - `GET /status/on` -> Green
 - `GET /status/idle` -> Blue
 - `GET /status/off` -> Red
+- `GET /status/killed` -> LED off
+- `GET /kill` -> same as `GET /status/killed`
 
 Example response:
 
@@ -110,7 +112,7 @@ Because the app keeps state in memory only, rerunning the setup also resets the 
 To stop the service:
 
 ```bash
-sudo systemctl stop rp-edge-status
+bash setup-pi.sh stop
 ```
 
 To inspect the current service state:

@@ -19,6 +19,7 @@ STATE_TO_COLOR = {
     "on": ("green", (0, 1, 0)),
     "idle": ("blue", (0, 0, 1)),
     "off": ("red", (1, 0, 0)),
+    "killed": ("off", (0, 0, 0)),
 }
 
 app = Flask(__name__)
@@ -61,6 +62,7 @@ def apply_led(state):
 
 def make_status(changed=None):
     color, _ = STATE_TO_COLOR[current_state]
+
     payload = {
         "device": DEVICE_NAME,
         "state": current_state,
@@ -118,6 +120,11 @@ def set_status(requested_state):
         current_state = requested_state
         last_changed_at = now_iso()
         return jsonify(make_status(changed=True))
+
+
+@app.get("/kill")
+def kill_led():
+    return set_status("killed")
 
 
 if __name__ == "__main__":
