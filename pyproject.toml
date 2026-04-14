@@ -1,0 +1,12 @@
+[project]
+name = "rp-edge-status"
+version = "0.1.0"
+description = "Tiny HTTP service for Raspberry Pi status LEDs"
+requires-python = ">=3.11"
+dependencies = [
+    "flask>=3.1.0",
+    "gpiozero>=2.0.1",
+]
+
+[tool.uv]
+package = false
