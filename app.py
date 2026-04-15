@@ -8,8 +8,6 @@ HOST = "0.0.0.0"
 PORT = 8000
 DEVICE_NAME = "edge-1"
 
-# Keep this False until the LED wiring is ready.
-USE_GPIO = False
 LED_COMMON_ANODE = False
 RED_PIN = 17
 GREEN_PIN = 27
@@ -19,7 +17,6 @@ STATE_TO_COLOR = {
     "on": ("green", (0, 1, 0)),
     "idle": ("blue", (0, 0, 1)),
     "off": ("red", (1, 0, 0)),
-    "killed": ("off", (0, 0, 0)),
 }
 
 app = Flask(__name__)
@@ -36,13 +33,10 @@ def now_iso():
 def setup_led():
     global led
 
-    if not USE_GPIO:
-        return
-
     try:
         from gpiozero import RGBLED
     except ImportError as exc:
-        raise RuntimeError("Install gpiozero or set USE_GPIO = False") from exc
+        raise RuntimeError("Install gpiozero before running the service") from exc
 
     led = RGBLED(
         red=RED_PIN,
@@ -120,11 +114,6 @@ def set_status(requested_state):
         current_state = requested_state
         last_changed_at = now_iso()
         return jsonify(make_status(changed=True))
-
-
-@app.get("/kill")
-def kill_led():
-    return set_status("killed")
 
 
 if __name__ == "__main__":

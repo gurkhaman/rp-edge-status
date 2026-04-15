@@ -7,7 +7,6 @@ REPO_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 SERVICE_PATH="/etc/systemd/system/${SERVICE_NAME}.service"
 SERVICE_USER="${USER}"
 PYTHON_VERSION="3.12"
-ACTION="${1:-start}"
 
 if [[ "${EUID}" -eq 0 ]]; then
     printf 'Run this script as the normal Pi user, not as root.\n' >&2
@@ -16,37 +15,6 @@ fi
 
 if [[ ! -f "${REPO_DIR}/app.py" || ! -f "${REPO_DIR}/pyproject.toml" ]]; then
     printf 'Run this script from the cloned rp-edge-status repository.\n' >&2
-    exit 1
-fi
-
-if [[ "${ACTION}" == "stop" ]]; then
-    sudo -v
-    sudo systemctl stop "${SERVICE_NAME}"
-
-    if [[ -x "${REPO_DIR}/.venv/bin/python" ]]; then
-        "${REPO_DIR}/.venv/bin/python" - <<'EOF'
-from app import BLUE_PIN, GREEN_PIN, LED_COMMON_ANODE, RED_PIN, USE_GPIO
-
-if USE_GPIO:
-    from gpiozero import RGBLED
-
-    led = RGBLED(
-        red=RED_PIN,
-        green=GREEN_PIN,
-        blue=BLUE_PIN,
-        active_high=not LED_COMMON_ANODE,
-    )
-    led.off()
-    led.close()
-EOF
-    fi
-
-    printf 'Service stopped.\n'
-    exit 0
-fi
-
-if [[ "${ACTION}" != "start" ]]; then
-    printf 'Usage: bash setup-pi.sh [stop]\n' >&2
     exit 1
 fi
 

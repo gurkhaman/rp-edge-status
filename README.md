@@ -10,12 +10,6 @@ On a Raspberry Pi, start or refresh the service with:
 bash setup-pi.sh
 ```
 
-To stop the service:
-
-```bash
-bash setup-pi.sh stop
-```
-
 ## Run
 
 ```bash
@@ -32,8 +26,6 @@ The service listens on `0.0.0.0:8000` by default.
 - `GET /status/on` -> Green
 - `GET /status/idle` -> Blue
 - `GET /status/off` -> Red
-- `GET /status/killed` -> LED off
-- `GET /kill` -> same as `GET /status/killed`
 
 Example response:
 
@@ -54,7 +46,6 @@ Edit the constants at the top of `app.py`:
 - `DEVICE_NAME`
 - `HOST`
 - `PORT`
-- `USE_GPIO`
 - `LED_COMMON_ANODE`
 - `RED_PIN`
 - `GREEN_PIN`
@@ -62,13 +53,11 @@ Edit the constants at the top of `app.py`:
 
 ## GPIO Note
 
-The code already has the GPIO hook built in, but it is off by default with `USE_GPIO = False`.
+GPIO is required. The service expects the RGB LED wiring and `gpiozero` stack to be available.
 
-When you are ready to use the real RGB LED on the Pi:
-
-1. Set `USE_GPIO = True`.
-2. Set the correct GPIO pins in `app.py`.
-3. Run `uv sync` on the Pi.
+For the RGB LED on the Pi:
+1. Set the correct GPIO pins in `app.py`.
+2. Run `bash setup-pi.sh` again.
 
 ## Pi Setup Script
 
@@ -108,12 +97,6 @@ bash setup-pi.sh
 That is the only command you need for both first-time setup and later refreshes. It will resync the environment, rewrite the service file, and start the service again.
 
 Because the app keeps state in memory only, rerunning the setup also resets the current status back to the default in `app.py`.
-
-To stop the service:
-
-```bash
-bash setup-pi.sh stop
-```
 
 To inspect the current service state:
 
